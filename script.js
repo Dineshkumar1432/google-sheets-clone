@@ -17,12 +17,10 @@ for (let i = 0; i < rows; i++) {
 
 // Function to apply mathematical and data quality functions
 function applyFunction(func) {
-  const selectedCells = document.querySelectorAll('.cell:focus');
-  if (selectedCells.length === 0) return;
-
-  const values = Array.from(selectedCells).map(cell => {
+  const cells = Array.from(document.querySelectorAll('.cell'));
+  const values = cells.map(cell => {
     const value = cell.innerText.trim();
-    return isNaN(value) ? value : parseFloat(value);
+    return isNaN(value) || value === '' ? value : parseFloat(value);
   });
 
   let result;
@@ -56,12 +54,13 @@ function applyFunction(func) {
       result = 'Invalid function';
   }
 
-  // Display the result in the first selected cell
+  // Display the result in the first cell
   if (Array.isArray(result)) {
-    selectedCells.forEach((cell, index) => {
-      cell.innerText = result[index];
+    cells.forEach((cell, index) => {
+      cell.innerText = result[index] ?? '';
     });
   } else {
-    selectedCells[0].innerText = result;
+    cells[0].innerText = result;
   }
 }
+
